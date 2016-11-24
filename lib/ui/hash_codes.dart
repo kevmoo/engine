@@ -7,28 +7,23 @@ part of dart_ui;
 class _HashEnd { const _HashEnd(); }
 const _HashEnd _hashEnd = const _HashEnd();
 
-/// Jenkins hash function, optimized for small integers.
-///
-/// Borrowed from the dart sdk: sdk/lib/math/jenkins_smi_hash.dart.
-class _Jenkins {
-  static int combine(int hash, Object o) {
+int _combine(int hash, Object o) {
     assert(o is! Iterable);
     hash = 0x1fffffff & (hash + o.hashCode);
     hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
     return hash ^ (hash >> 6);
   }
 
-  static int finish(int hash) {
+   int _finish(int hash) {
     hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
     hash = hash ^ (hash >> 11);
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
-}
 
 /// Combine up to twenty values' hashCodes into one value.
 ///
 /// If you only need to handle one value's hashCode, then just refer to its
-/// [hashCode] getter directly.
+/// `hashCode` getter directly.
 ///
 /// If you need to combine an arbitrary number of values from a List or other
 /// Iterable, use [hashList]. The output of hashList can be used as one of the
@@ -45,8 +40,7 @@ int hashValues(
   Object arg13 = _hashEnd, Object arg14 = _hashEnd, Object arg15 = _hashEnd,
   Object arg16 = _hashEnd, Object arg17 = _hashEnd, Object arg18 = _hashEnd,
   Object arg19 = _hashEnd, Object arg20 = _hashEnd ]) {
-  int result = 0;
-  result = _Jenkins.combine(result, arg01);
+  var result = _Jenkins.combine(0, arg01);
   result = _Jenkins.combine(result, arg02);
   if (arg03 != _hashEnd) {
     result = _Jenkins.combine(result, arg03);
